@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.vscode/
+
+# Input data (large / proprietary)
+merged_summary.csv
+is26/
+ıs26/
+
+# BLAST XML results (large, auto-regenerated)
+results/blast_results/
+
+# Logs
+results/logs/
+
+# Excel output (binary)
+results/*.xlsx
+
+# Keep results directory structure (but not data)
+results/
+
+# macOS
+.DS_Store
+results/novel_is26.fasta
