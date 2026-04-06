@@ -73,14 +73,14 @@ def build_xml_to_query_map(fasta_path: str, xml_dir: str) -> Dict[str, str]:
     return mapping
 
 
-def parse_xml_file(xml_gz_path: str, query_id: str,
+def parse_xml_file(raw: str, query_id: str,
                    min_qcov: float, min_ident: float) -> List[Dict]:
+    import io
     rows = []
     try:
-        with gzip.open(xml_gz_path, "rt", encoding="utf-8") as fh:
-            blast_records = list(NCBIXML.parse(fh))
+        blast_records = list(NCBIXML.parse(io.StringIO(raw)))
     except Exception as e:
-        tqdm.write(f"  {R}[!] Could not parse {os.path.basename(xml_gz_path)}: {e}{RST}")
+        tqdm.write(f"  {R}[!] Could not parse XML for {query_id}: {e}{RST}")
         return rows
 
     for blast_record in blast_records:
@@ -156,7 +156,7 @@ def main():
                 raw = fh.read()
             total_hits = raw.count("<Hit>")
 
-            rows = parse_xml_file(xml_path, query_id, MIN_QUERY_COV, MIN_IDENTITY)
+            rows = parse_xml_file(raw, query_id, MIN_QUERY_COV, MIN_IDENTITY)
             all_rows.extend(rows)
 
             passing = len(rows)
